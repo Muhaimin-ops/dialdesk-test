@@ -28,7 +28,7 @@ Visitor's browser ──WebRTC audio──────────────�
    Authentication → URL Configuration: set *Site URL* to your app URL and add `https://YOUR-APP/auth/callback` to *Redirect URLs*.
 2. **Env vars** → copy `.env.example` to `.env` and fill in: `APP_SECRET` (`openssl rand -base64 48`), the three Supabase values, and a valid `GROQ_API_KEY`.
 3. **Start Ollama** with the model in `LLAMA_MODEL` (default `gemma3:1b`). Booking and lead-capture require a model that accepts tool calls.
-4. **Install and run the voice service** in one terminal: `python -m pip install -r voice-pipeline\requirements.txt`, then `python voice-pipeline\web_voice.py`. The service reads `APP_URL` and `GROQ_API_KEY` from the project `.env`/`.env.local` files.
+4. **Install and run the voice service** in one terminal: `python -m pip install -r voice-pipeline\requirements-local.txt`, then `python voice-pipeline\web_voice.py`. The service reads `APP_URL` and `GROQ_API_KEY` from the project `.env`/`.env.local` files.
 5. **Run the app** in another terminal: `npm install && npm run dev` → http://localhost:3000 → sign up → onboarding → Agent settings → add your site under *Allowed websites* → make a test call from your public page (`/b/<slug>`). The dev launcher gives Supabase values in the project env files precedence over inherited shell values.
 
 Microphone access requires **HTTPS** (localhost is exempt), so use a real domain in production.

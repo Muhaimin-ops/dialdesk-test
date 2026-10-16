@@ -19,12 +19,14 @@ Browser signaling submits the SDP offer as soon as local setup completes and sen
 - DialDesk running on `APP_URL`
 - For browser calls on production networks, reachable UDP for WebRTC; a TURN service may be needed behind strict NATs/firewalls
 
-Install Python dependencies from the repository root, then start the service:
+Install the local-development dependencies from the repository root, then start the service:
 
 ```powershell
-python -m pip install -r voice-pipeline\requirements.txt
+python -m pip install -r voice-pipeline\requirements-local.txt
 python voice-pipeline\web_voice.py
 ```
+
+`requirements.txt` is the deployment dependency set used by Vercel and the web-service Docker image. It intentionally excludes Pipecat's `local` extra, which installs PyAudio and requires PortAudio system headers. `requirements-local.txt` adds that extra for the optional local-microphone runner.
 
 Set the Groq key and app origin for the current PowerShell window if they are not in `.env.local` or `.env`:
 

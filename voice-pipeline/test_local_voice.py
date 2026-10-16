@@ -44,6 +44,31 @@ class CheckLlamaServerTests(unittest.TestCase):
             )
 
 
+class DependencyConfigurationTests(unittest.TestCase):
+    def test_local_requirements_keep_microphone_audio_extra(self):
+        requirements_path = os.path.join(
+            os.path.dirname(__file__), "requirements-local.txt"
+        )
+        with open(requirements_path, encoding="utf-8") as requirements_file:
+            requirements = requirements_file.read()
+
+        self.assertIn("pipecat-ai[local]", requirements)
+
+    def test_deployment_requirements_omit_local_audio_extra(self):
+            requirements_path = os.path.join(os.path.dirname(__file__), "requirements.txt")
+            with open(requirements_path, encoding="utf-8") as requirements_file:
+                requirements = requirements_file.read()
+
+            pipecat_requirement = next(
+                line for line in requirements.splitlines() if line.startswith("pipecat-ai[")
+            )
+            self.assertNotIn(
+                "local",
+                pipecat_requirement.partition("[")[2].partition("]")[0].split(","),
+                "The Vercel Python runtime cannot compile PyAudio without PortAudio headers.",
+            )
+
+
 class CheckGroqApiTests(unittest.TestCase):
     @patch.dict(os.environ, {"GROQ_API_KEY": "test-key"})
     @patch("local_voice.urlopen")

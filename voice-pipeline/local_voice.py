@@ -136,7 +136,7 @@ async def run_voice_pipeline() -> None:
     except ImportError as error:
         raise RuntimeError(
             "Voice dependencies are missing. Install them with "
-            "`python -m pip install -r voice-pipeline/requirements.txt`."
+            "`python -m pip install -r voice-pipeline/requirements-local.txt`."
         ) from error
 
     check_configuration()

@@ -1,0 +1,2 @@
+-r requirements.txt
+pipecat-ai[local]>=1.12.0

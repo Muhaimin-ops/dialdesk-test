@@ -135,14 +135,14 @@
 			"problemMatcher": []
 		},
 		{
-			"label": "Install voice-pipeline requirements",
+			"label": "Install local voice-pipeline requirements",
 			"type": "shell",
-			"command": ".venv\\Scripts\\python.exe -m pip install -r voice-pipeline\\requirements.txt",
+			"command": ".venv\\Scripts\\python.exe -m pip install -r voice-pipeline\\requirements-local.txt",
 			"isBackground": false,
 			"problemMatcher": []
 		},
 		{
-			"label": "Run voice prototype tests",
+			"label": "Run voice pipeline tests",
 			"type": "shell",
 			"command": ".venv\\Scripts\\python.exe",
 			"args": [
@@ -152,7 +152,7 @@
 				"-s",
 				"voice-pipeline",
 				"-p",
-				"test_local_voice.py"
+				"test_*.py"
 			],
 			"isBackground": false,
 			"problemMatcher": []
@@ -606,17 +606,5 @@
 			"isBackground": true,
 			"problemMatcher": []
 		},
-		{
-			"label": "Check temporary task cleanup",
-			"type": "shell",
-			"command": "git",
-			"args": [
-				"diff",
-				"--",
-				".vscode/tasks.json"
-			],
-			"isBackground": false,
-			"problemMatcher": []
-		}
 	]
 }

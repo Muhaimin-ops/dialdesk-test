@@ -1,2 +1,2 @@
-pipecat-ai[groq,local,kokoro,webrtc,runner]>=1.12.0
+pipecat-ai[groq,kokoro,webrtc,runner]>=1.12.0
 aiohttp>=3.10,<4
