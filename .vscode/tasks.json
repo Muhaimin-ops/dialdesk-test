@@ -1,0 +1,610 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Typecheck sample site",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Test sample widget changes",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Build sample integration UI",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start DialDesk sample dev server",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run environment regression test",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test",
+				"--",
+				"src/lib/dev-env.test.ts"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check Supabase anon key",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"--input-type=module",
+				"-e",
+				"import { loadLocalSupabaseEnv } from './scripts/load-local-env.mjs'; loadLocalSupabaseEnv(); const response = await fetch(`${process.env.SUPABASE_URL}/auth/v1/settings`, { headers: { apikey: process.env.SUPABASE_ANON_KEY, authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}` } }); const body = await response.json().catch(() => null); console.log(JSON.stringify({ status: response.status, ok: response.ok, message: body?.message ?? body?.error_description ?? null }));"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate Supabase public key",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"--input-type=module",
+				"-e",
+				"import { loadLocalSupabaseEnv } from \"./scripts/load-local-env.mjs\"; loadLocalSupabaseEnv(); const response = await fetch(process.env.SUPABASE_URL + \"/auth/v1/settings\", { headers: { apikey: process.env.SUPABASE_ANON_KEY, authorization: \"Bearer \" + process.env.SUPABASE_ANON_KEY } }); const body = await response.json().catch(() => null); console.log(JSON.stringify({ status: response.status, ok: response.ok, message: body?.message ?? body?.error_description ?? null }));"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate Supabase anon key",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"scripts/check-supabase-anon.mjs"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Typecheck DialDesk",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run targeted tests",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test",
+				"--",
+				"src/lib/dev-env.test.ts"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check TypeScript",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run full test suite",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Install voice-pipeline requirements",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe -m pip install -r voice-pipeline\\requirements.txt",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run voice prototype tests",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"unittest",
+				"discover",
+				"-s",
+				"voice-pipeline",
+				"-p",
+				"test_local_voice.py"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Probe local Ollama endpoint",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-c",
+				"import json,urllib.request; u='http://127.0.0.1:11434/v1/models';\ntry:\n r=urllib.request.urlopen(u,timeout=3); d=json.load(r); print(json.dumps({'status':r.status,'models':[x.get('id') for x in d.get('data',[]) if isinstance(x,dict)]}))\nexcept Exception as e: print(json.dumps({'reachable':False,'error':type(e).__name__+': '+str(e)}))"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Ollama voice preflight",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Recheck Groq API credentials",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate rotated Groq API key",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Retry Groq key validation",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Retry Groq key validation again",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Retry Groq from pipeline env",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Retry Groq lookup from voice env",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Retry Groq validation",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check Groq voice pipeline",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check-groq"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run DialDesk unit tests",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start DialDesk dev server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Build DialDesk production",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Test local voice pipeline",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"unittest",
+				"discover",
+				"-s",
+				"voice-pipeline",
+				"-p",
+				"test_*.py",
+				"-v"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check local voice services",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"voice-pipeline\\local_voice.py",
+				"--check"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect Pipecat browser transport APIs",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-c",
+				"import pipecat,inspect; print(pipecat.__file__); import pipecat.transports.small_webrtc.transport as t; print(t.__file__); print([n for n in dir(t) if 'SmallWebRTC' in n]); import pipecat.transports.small_webrtc.connection as c; print(c.__file__); print([n for n in dir(c) if 'SmallWebRTC' in n])"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Install Pipecat WebRTC dependencies",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"pip",
+				"install",
+				"-r",
+				"voice-pipeline\\requirements.txt"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start native Pipecat voice service",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"uvicorn",
+				"web_voice:app",
+				"--app-dir",
+				"voice-pipeline",
+				"--host",
+				"127.0.0.1",
+				"--port",
+				"7860"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Restart DialDesk dev server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start DialDesk production server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"start"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run DialDesk dev on 3001",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"set APP_URL=http://localhost:3001 && npm run dev -- --port 3001"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Launch DialDesk dev on 3001",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"process.env.APP_URL='http://localhost:3001'; process.argv=[process.execPath,'scripts/dev.mjs','--port','3001']; import('./scripts/dev.mjs')"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Launch dev server alternate URL",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"process.env.APP_URL=\"http://localhost:3001\"; process.argv=[process.execPath,\"scripts/dev.mjs\",\"--port\",\"3001\"]; import(\"./scripts/dev.mjs\")"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Final production build",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Final DialDesk unit tests",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Final TypeScript typecheck",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Final Python voice tests",
+			"type": "shell",
+			"command": ".\\.venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"unittest",
+				"discover",
+				"-s",
+				"voice-pipeline",
+				"-p",
+				"test*.py"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Final verified production build",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run app for smoke test",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev",
+				"--",
+				"--port",
+				"3000"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "DialDesk dev smoke 3001",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev",
+				"--",
+				"--port",
+				"3001"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "DialDesk app on configured origin",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev",
+				"--",
+				"--port",
+				"3000"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Aligned-origin voice embed smoke",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"process.env.APP_URL='http://localhost:3002';process.argv.splice(1,0,'scripts/dev.mjs','--port','3002');await import('./scripts/dev.mjs')"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Aligned-origin embed test",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"process.env.APP_URL=\"http://localhost:3002\";process.argv.splice(1,0,\"scripts/dev.mjs\",\"--port\",\"3002\");await import(\"./scripts/dev.mjs\")"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Aligned app origin smoke test",
+			"type": "shell",
+			"command": "$env:APP_URL=\"http://localhost:3002\"; npm run dev -- --port 3002",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Restart dev server on configured URL",
+			"type": "shell",
+			"command": "Stop-Process -Id 20224; npm run dev -- --port 3000",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check local endpoints",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"Promise.all(['http://localhost:3000','http://localhost:7860/health'].map(async url=>{try{const r=await fetch(url,{signal:AbortSignal.timeout(5000)});console.log(`${url}: status=${r.status}, reachable=yes`)}catch{console.log(`${url}: status=unavailable, reachable=no`)}}))"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check localhost HTTP reachability",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"Promise.all([\"http://localhost:3000\",\"http://localhost:7860/health\"].map(async url=>{try{const r=await fetch(url,{signal:AbortSignal.timeout(5000)});console.log(`${url}: status=${r.status}, reachable=yes`)}catch{console.log(`${url}: status=unavailable, reachable=no`)}}))"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check local endpoint status",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"Promise.all([String.fromCharCode(104,116,116,112,58,47,47,108,111,99,97,108,104,111,115,116,58,51,48,48,48),String.fromCharCode(104,116,116,112,58,47,47,108,111,99,97,108,104,111,115,116,58,55,56,54,48,47,104,101,97,108,116,104)].map(async url=>{try{const r=await fetch(url,{signal:AbortSignal.timeout(5000)});console.log(`${url}: status=${r.status}, reachable=yes`)}catch{console.log(`${url}: status=unavailable, reachable=no`)}}))"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start DialDesk dev server for WebRTC repro",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

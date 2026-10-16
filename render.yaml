@@ -1,0 +1,24 @@
+# Render Blueprint: New → Blueprint → select this repo. Fill the "sync: false" values in the dashboard.
+services:
+  - type: web
+    name: dialdesk
+    runtime: node
+    plan: starter            # free plans sleep and add cold-start delay to the first call
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: APP_SECRET
+        generateValue: true
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: APP_URL
+        sync: false

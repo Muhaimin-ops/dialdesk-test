@@ -1,0 +1,46 @@
+# VPS deployment: app + Caddy (automatic HTTPS).
+#   1. cp .env.example .env   and fill it in
+#   2. echo "DOMAIN=receptionist.example.com" >> .env
+#   3. docker compose up -d --build
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      VOICE_PIPELINE_URL: http://host.docker.internal:7860
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:3000:3000"
+    expose: ["3000"]
+  voice:
+    build:
+      context: .
+      dockerfile: voice-pipeline/Dockerfile
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      DIALDESK_APP_URL: ${DIALDESK_APP_URL:-http://127.0.0.1:3000}
+      GROQ_API_KEY: ${GROQ_API_KEY:?set GROQ_API_KEY in .env}
+      LLAMA_BASE_URL: ${LLAMA_BASE_URL:-http://127.0.0.1:11434/v1}
+      LLAMA_MODEL: ${LLAMA_MODEL:-gemma3_1b_heretic_gguf:latest}
+      KOKORO_VOICE: ${KOKORO_VOICE:-af_heart}
+      KOKORO_SPEED: ${KOKORO_SPEED:-1.1}
+    volumes:
+      - kokoro_cache:/root/.cache/pipecat/kokoro-onnx
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  caddy_data:
+  caddy_config:
+  kokoro_cache:
