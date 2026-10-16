@@ -8,6 +8,7 @@ next-env.d.ts
 # secrets: never commit any env file except the example
 .env
 .env.*
+.env*
 !.env.example
 .vercel
 .DS_Store

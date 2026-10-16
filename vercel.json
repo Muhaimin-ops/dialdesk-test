@@ -1,38 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "app": {
-      "root": ".",
-      "framework": "nextjs",
-      "bindings": [
-        {
-          "type": "service",
-          "service": "voice-pipeline",
-          "format": "url",
-          "env": "VOICE_PIPELINE_URL"
-        }
-      ]
-    },
-    "voice-pipeline": {
-      "root": "voice-pipeline",
-      "runtime": "python",
-      "entrypoint": "web_voice:app",
-      "bindings": [
-        {
-          "type": "service",
-          "service": "app",
-          "format": "url",
-          "env": "DIALDESK_APP_URL"
-        }
-      ]
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": {
-        "service": "app"
-      }
-    }
-  ]
+  "framework": "nextjs"
 }

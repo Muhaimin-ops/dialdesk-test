@@ -1,22 +1,12 @@
 import asyncio
 import time
 import unittest
-from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 from fastapi import HTTPException
 
 import web_voice
 from pipecat.frames.frames import TTSSpeakFrame
-
-
-class VercelEntrypointTests(unittest.TestCase):
-    def test_python_runtime_declares_the_fastapi_entrypoint(self):
-        pyproject_path = Path(__file__).with_name("pyproject.toml")
-        pyproject = pyproject_path.read_text(encoding="utf-8")
-
-        self.assertIn("[tool.vercel]", pyproject)
-        self.assertIn('entrypoint = "web_voice:app"', pyproject)
 
 
 class FakeRequest:

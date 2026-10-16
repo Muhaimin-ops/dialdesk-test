@@ -37,7 +37,7 @@ Microphone access requires **HTTPS** (localhost is exempt), so use a real domain
 
 | Platform | Steps |
 |---|---|
-| **Vercel** | `vercel.json` defines an `app` service and an internal `voice-pipeline` Python service. The app's `VOICE_PIPELINE_URL` binding targets the voice service; the voice service's `DIALDESK_APP_URL` binding targets the app. Only the app is publicly routed. Configure the app's canonical `APP_URL`, Supabase values and `APP_SECRET`, and provide `GROQ_API_KEY`, `LLAMA_BASE_URL`, `LLAMA_MODEL`, and Kokoro settings to the voice service. Do not set either binding variable manually. **This wiring is not sufficient for production voice calls yet:** the current Pipecat service runs a long-lived WebRTC pipeline, needs UDP media connectivity and local Kokoro/Ollama dependencies, while Vercel's Python runtime is request-based. Keep the voice service on a compatible external host until that runtime/network model is addressed. |
+| **Vercel + VPS voice** | Vercel serves the Next.js app only. Run `voice-pipeline/Dockerfile` on a Linux VPS with public HTTPS and UDP connectivity for WebRTC. Set `VOICE_PIPELINE_URL` in Vercel to the VPS voice-service URL and `DIALDESK_APP_URL` on the VPS to the canonical Vercel app URL. The Pipecat service is deliberately not a Vercel Function: its dependency bundle exceeds Vercel's 500 MB function limit and it needs long-lived WebRTC/UDP media handling. |
 | **Render / Railway** | Deploy the Next.js app and `voice-pipeline/Dockerfile` as separate services. Set `VOICE_PIPELINE_URL` in the app and `DIALDESK_APP_URL` in the voice service. |
 | **VPS + Docker** | On a Linux Docker host, copy `.env.example` to `.env`, set `APP_URL=https://your.domain` and `DOMAIN=your.domain`, configure Groq and Ollama, then run `docker compose up -d --build`. Caddy gets the HTTPS certificate automatically. The voice service uses host networking for WebRTC media; allow its UDP traffic through the firewall. |
 | **VPS + PM2** | Deploy Next.js as usual and run the Python voice service separately with `uvicorn web_voice:app --host 0.0.0.0 --port 7860` from `voice-pipeline`. Set `VOICE_PIPELINE_URL` in Next.js and `DIALDESK_APP_URL` in the voice service. |
@@ -57,9 +57,9 @@ Optional attributes: `data-color="#14232F"`, `data-position="left"`.
 | `APP_SECRET` | yes | 32+ chars; signs embed/call tokens. Rotating it invalidates open sessions only. |
 | `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | yes | Service role is server-only. Never expose it. |
 | `APP_URL` | production | Canonical HTTPS origin, without a path. Required in production to prevent host-header-based callback and billing URLs. |
-| `VOICE_PIPELINE_URL` | production | Pipecat service URL; defaults to `http://127.0.0.1:7860` in development. In the Vercel multi-service configuration this is injected as a binding into the app service; do not configure it manually. |
+| `VOICE_PIPELINE_URL` | production | Public HTTPS URL of the separately hosted Pipecat service; defaults to `http://127.0.0.1:7860` in development. Set this in Vercel's app environment. |
 | `GROQ_API_KEY` | voice service | Whisper STT credentials. Audio is sent to Groq for transcription. |
-| `DIALDESK_APP_URL` | voice service | App URL the Pipecat service uses for signed session configuration and booking tools. In the Vercel multi-service configuration this is injected as a binding into the voice service; do not configure it manually. |
+| `DIALDESK_APP_URL` | voice service | Canonical app URL the Pipecat VPS uses for signed session configuration and booking tools. Set this on the voice host. |
 | `LLAMA_BASE_URL`, `LLAMA_MODEL` | voice service | Ollama OpenAI-compatible local endpoint and loaded model name. Despite the compatibility protocol, no OpenAI API is used. |
 | `KOKORO_VOICE`, `KOKORO_SPEED` | no | Default local Kokoro voice and speaking rate. Per-business voice selection overrides the voice. |
 | `FREE_CALLS_PER_MONTH` / `PRO_CALLS_PER_MONTH` | no | Defaults 20 / 500. Your main cost control. |

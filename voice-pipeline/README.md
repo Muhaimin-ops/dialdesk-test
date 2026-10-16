@@ -26,7 +26,7 @@ python -m pip install -r voice-pipeline\requirements-local.txt
 python voice-pipeline\web_voice.py
 ```
 
-`requirements.txt` is the deployment dependency set used by Vercel and the web-service Docker image. It intentionally excludes Pipecat's `local` extra, which installs PyAudio and requires PortAudio system headers. `requirements-local.txt` adds that extra for the optional local-microphone runner. `pyproject.toml` declares `web_voice:app` as the Vercel Python runtime entrypoint.
+`requirements.txt` is the deployment dependency set used by the web-service Docker image. It intentionally excludes Pipecat's `local` extra, which installs PyAudio and requires PortAudio system headers. `requirements-local.txt` adds that extra for the optional local-microphone runner.
 
 Set the Groq key and app origin for the current PowerShell window if they are not in `.env.local` or `.env`:
 
