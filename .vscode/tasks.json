@@ -605,6 +605,43 @@
 			],
 			"isBackground": true,
 			"problemMatcher": []
+		},
+		{
+			"label": "Temporary inspect git status",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"--short",
+				"--branch"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Temporary inspect git diff",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"diff",
+				"--",
+				".vscode/tasks.json"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Temporary inspect latest commit",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"log",
+				"-1",
+				"--oneline",
+				"--decorate"
+			],
+			"isBackground": false,
+			"problemMatcher": []
 		}
 	]
 }
