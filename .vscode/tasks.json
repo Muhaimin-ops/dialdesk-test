@@ -605,6 +605,19 @@
 			],
 			"isBackground": true,
 			"problemMatcher": []
+		},
+		{
+			"label": "Add LiveKit browser and server SDKs",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"install",
+				"livekit-client",
+				"livekit-server-sdk",
+				"@livekit/protocol"
+			],
+			"isBackground": false,
+			"problemMatcher": []
 		}
 	]
 }
