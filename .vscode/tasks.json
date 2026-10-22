@@ -618,6 +618,209 @@
 			],
 			"isBackground": false,
 			"problemMatcher": []
+		},
+		{
+			"label": "Run app for live call repro",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev",
+				"--",
+				"--port",
+				"3000"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect worktree state",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"--short"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate Docker Compose config",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"compose",
+				"config",
+				"--quiet"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check voice deployment diff",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"diff",
+				"--check",
+				"--",
+				"docker-compose.yml",
+				"voice-pipeline/README.md"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Review live-call fix diff",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"diff",
+				"--",
+				"docker-compose.yml",
+				"voice-pipeline/README.md"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify production voice URL loading",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"process.env.NODE_ENV='production';require('@next/env').loadEnvConfig(process.cwd());console.log(JSON.stringify({NODE_ENV:process.env.NODE_ENV,VOICE_PIPELINE_URL:process.env.VOICE_PIPELINE_URL||null}))"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Typecheck after voice config change",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start Pipecat service for verification",
+			"type": "shell",
+			"command": ".\\.venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"uvicorn",
+				"web_voice:app",
+				"--app-dir",
+				"voice-pipeline",
+				"--host",
+				"127.0.0.1",
+				"--port",
+				"7860"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Focused production config regression",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test",
+				"--",
+				"src/lib/env.test.ts"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Typecheck local production config fix",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Find local app listener",
+			"type": "shell",
+			"command": "Get-NetTCPConnection",
+			"args": [
+				"-State",
+				"Listen",
+				"-LocalPort",
+				"3000",
+				"|",
+				"Select-Object",
+				"-ExpandProperty",
+				"OwningProcess"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Node tests excluding empty suite",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"test",
+				"--",
+				"--exclude",
+				"src/lib/livekit.test.ts"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check final changed files",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"--short"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check live call fix diff",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"diff",
+				"--check"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check Pipecat service health",
+			"type": "shell",
+			"command": "curl.exe",
+			"args": [
+				"--fail",
+				"--silent",
+				"http://127.0.0.1:7860/health"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check local production app health",
+			"type": "shell",
+			"command": "curl.exe",
+			"args": [
+				"--fail",
+				"--silent",
+				"http://127.0.0.1:3000/api/health"
+			],
+			"isBackground": false,
+			"problemMatcher": []
 		}
 	]
 }

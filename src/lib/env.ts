@@ -55,6 +55,7 @@ export async function getAppUrl(): Promise<string> {
     } catch {
       throw new Error('APP_URL must be a valid absolute URL, such as https://app.example.com.');
     }
+    const isLoopback = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
     if (
       !['http:', 'https:'].includes(url.protocol) ||
       url.username ||
@@ -62,9 +63,9 @@ export async function getAppUrl(): Promise<string> {
       url.pathname !== '/' ||
       url.search ||
       url.hash ||
-      (process.env.NODE_ENV === 'production' && url.protocol !== 'https:')
+      (process.env.NODE_ENV === 'production' && url.protocol !== 'https:' && !isLoopback)
     ) {
-      throw new Error('APP_URL must be a public origin (HTTPS in production), without a path or credentials.');
+      throw new Error('APP_URL must be a public origin (HTTPS in production except on loopback), without a path or credentials.');
     }
     return url.origin;
   }

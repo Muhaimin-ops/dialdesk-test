@@ -26,6 +26,9 @@ describe('production configuration', () => {
       vi.stubEnv('VOICE_PIPELINE_URL', '');
       expect(() => voicePipelineUrl()).toThrow('VOICE_PIPELINE_URL is required');
 
+      vi.stubEnv('VOICE_PIPELINE_URL', 'http://127.0.0.1:7860');
+      expect(voicePipelineUrl()).toBe('http://127.0.0.1:7860');
+
       vi.stubEnv('VOICE_PIPELINE_URL', 'ftp://voice.example.com');
       expect(() => voicePipelineUrl()).toThrow('HTTP(S) service URL');
 
@@ -38,6 +41,9 @@ describe('production configuration', () => {
     vi.stubEnv('NODE_ENV', 'production');
     vi.stubEnv('APP_URL', 'http://app.example.com');
     await expect(getAppUrl()).rejects.toThrow('APP_URL must be a public origin');
+
+    vi.stubEnv('APP_URL', 'http://localhost:3000');
+    await expect(getAppUrl()).resolves.toBe('http://localhost:3000');
 
     vi.stubEnv('APP_URL', 'https://app.example.com/path');
     await expect(getAppUrl()).rejects.toThrow('APP_URL must be a public origin');

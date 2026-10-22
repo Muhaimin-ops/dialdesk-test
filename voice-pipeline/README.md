@@ -11,6 +11,8 @@ The service retrieves per-call configuration from DialDesk using the signed call
 
 Browser signaling submits the SDP offer as soon as local setup completes and sends later ICE candidates through the Pipecat PATCH endpoint. This avoids blocking calls on browsers that do not report ICE gathering completion promptly. Production deployments still need working UDP connectivity or a configured TURN relay for networks that block direct WebRTC traffic.
 
+In Docker Compose, the voice service uses host networking so WebRTC media can reach the host's UDP interfaces. It must bind beyond loopback for the app container to reach it through `host.docker.internal`; Compose sets `VOICE_PIPELINE_HOST=0.0.0.0`. Restrict inbound access to port 7860 at the host firewall, and configure TURN when callers' networks block direct UDP.
+
 ## Requirements
 
 - Python 3.10+

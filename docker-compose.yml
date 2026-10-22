@@ -22,6 +22,7 @@ services:
     network_mode: host
     environment:
       DIALDESK_APP_URL: ${DIALDESK_APP_URL:-http://127.0.0.1:3000}
+      VOICE_PIPELINE_HOST: 0.0.0.0
       GROQ_API_KEY: ${GROQ_API_KEY:?set GROQ_API_KEY in .env}
       LLAMA_BASE_URL: ${LLAMA_BASE_URL:-http://127.0.0.1:11434/v1}
       LLAMA_MODEL: ${LLAMA_MODEL:-gemma3_1b_heretic_gguf:latest}

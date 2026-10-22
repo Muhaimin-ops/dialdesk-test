@@ -56,7 +56,7 @@ Optional attributes: `data-color="#14232F"`, `data-position="left"`.
 |---|---|---|
 | `APP_SECRET` | yes | 32+ chars; signs embed/call tokens. Rotating it invalidates open sessions only. |
 | `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | yes | Service role is server-only. Never expose it. |
-| `APP_URL` | production | Canonical HTTPS origin, without a path. Required in production to prevent host-header-based callback and billing URLs. |
+| `APP_URL` | production | Canonical HTTPS origin, without a path. HTTP is allowed only for loopback (`localhost`, `127.0.0.1`, or `::1`) to support local production-build testing. |
 | `VOICE_PIPELINE_URL` | production | Public HTTPS URL of the separately hosted Pipecat service; defaults to `http://127.0.0.1:7860` in development. Set this in Vercel's app environment. |
 | `GROQ_API_KEY` | voice service | Whisper STT credentials. Audio is sent to Groq for transcription. |
 | `DIALDESK_APP_URL` | voice service | Canonical app URL the Pipecat VPS uses for signed session configuration and booking tools. Set this on the voice host. |
